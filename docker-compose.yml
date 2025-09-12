@@ -10,6 +10,12 @@ services:
       MONGO_INITDB_DATABASE: ${MONGO_DB_NAME}
     volumes:
       - mongo_data:/data/db  
+  user-management:
+    depends_on:
+      - mongodb
+    build: ./user-management
+    ports:
+      - 9004:9004
 
 volumes:
   mongo_data:
