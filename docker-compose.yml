@@ -1,21 +1,11 @@
 services:
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    ports:
-      - "27017:27017"
+  user-management:
+    build: ./user-management
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_DB_NAME}
-    volumes:
-      - mongo_data:/data/db  
-  user-management:
-    depends_on:
-      - mongodb
-    build: ./user-management
+      MONGO_HOST: mongodb
+      SPRING_DATA_MONGODB_URI: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/${MONGO_DB_NAME}?authSource=admin
     ports:
-      - 9004:9004
-
-volumes:
-  mongo_data:
+      - "9004:9004"
