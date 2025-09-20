@@ -5,9 +5,14 @@ import com.pigment.usermanagement.repository.UserRepository;
 import com.pigment.usermanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,9 +20,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 /** USERSERVICEIMPL
- * This class implements the methods of the UserService interface.
+ * This class implements the methods of the UserService and UserDetailsService interface.
  */
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -56,5 +61,25 @@ public class UserServiceImpl implements UserService {
      */
     private String generateNextId() {
         return UUID.randomUUID().toString();
+    }
+
+    /**
+     * Called when authenticating user
+     * @param username
+     * @return UserDetails
+     * @throws UsernameNotFoundException
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByEmail(username)
+                .orElseThrow(
+                        () -> new UsernameNotFoundException(username)
+                );
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                List.of(new SimpleGrantedAuthority("USER"))
+        );
     }
 }

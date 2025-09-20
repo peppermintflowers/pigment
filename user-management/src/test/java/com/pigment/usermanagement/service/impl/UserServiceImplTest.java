@@ -32,6 +32,7 @@ public class UserServiceImplTest {
     @Mock
     PasswordEncoder passwordEncoder;
 
+
     private User user;
     private final String email = "test@example.com";
     private final String password = "password";

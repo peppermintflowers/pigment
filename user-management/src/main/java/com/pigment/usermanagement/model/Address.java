@@ -1,7 +1,6 @@
 package com.pigment.usermanagement.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 /** ADDRESS
  * This class is used to store the Address details of the User.

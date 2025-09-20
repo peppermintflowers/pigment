@@ -5,12 +5,14 @@ import com.pigment.usermanagement.config.ApplicationConfig;
 import com.pigment.usermanagement.model.Address;
 import com.pigment.usermanagement.model.User;
 import com.pigment.usermanagement.repository.UserRepository;
+import com.pigment.usermanagement.service.TokenHandler;
 import com.pigment.usermanagement.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -33,6 +35,12 @@ public class UserControllerTest {
 
     @MockitoBean
     private UserService userService;
+
+    @MockitoBean
+    private TokenHandler tokenHandler;
+
+    @MockitoBean
+    private AuthenticationManager authenticationManager;
 
     @MockitoBean
     private UserRepository userRepository;
